@@ -44,7 +44,6 @@ public class playerController : MonoBehaviour
         if (collision.gameObject.tag == "Collectible")
         {
             Destroy(collision.gameObject);
-            myScore++;
         }
     }
 }
