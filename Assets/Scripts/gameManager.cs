@@ -5,44 +5,55 @@ using UnityEngine;
 
 public class gameManager : MonoBehaviour
 {
-    [Header("Global vars")]
+    [Header("Global Vars")]
     public GameObject myPlayer;
     public float timer;
-    public float timeLimt;
     public int score;
+    public float timeLimit;
 
-    [Header("NPC vars")]
+    [Header("NPC Vars")]
     public GameObject collectible1;
     public float spawnInterval;
     public float spawnTimer;
     public Vector2 spawnXBounds;
     public Vector2 spawnYBounds;
 
-    [Header("UI/UX VARS")]
     public TextMeshProUGUI TitleText;
 
+    [Header("Camera Toggle")]
+    public GameObject mainCamera;
+    public bool toggleMainCamera;
+
+
+    
 
     public enum GameState
     {
         GAMESTART, PLAYING, GAMEOVER
-    };
+    }
 
-    public GameState mygameState;
+    public GameState myGameState;
+    
     // Start is called before the first frame update
     void Start()
     {
-        mygameState = GameState.GAMESTART;
+        myGameState = GameState.GAMESTART;
         myPlayer.SetActive(false);
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        switch (mygameState)
+
+
+
+        switch (myGameState)
         {
             case GameState.GAMESTART:
-                if (Input.GetKey(KeyCode.Space))
+                if(Input.GetKey(KeyCode.Space))
                 {
                     EnterPlaying();
                 }
@@ -50,26 +61,28 @@ public class gameManager : MonoBehaviour
 
             case GameState.PLAYING:
 
-                //timer is global, spawnTimer tracks collectibles
                 timer += Time.deltaTime;
                 spawnTimer += Time.deltaTime;
 
-                if (timer > timeLimt)
+                if (timer > timeLimit)
                 {
-                    EnterFinal();
+                   EnterFinale();
                 }
 
-                //this is the world position where our collectible spawns
                 float x = Random.Range(spawnXBounds.x, spawnXBounds.y);
                 float y = Random.Range(spawnYBounds.x, spawnYBounds.y);
-                Vector3 targetPos = new Vector3(x, y, 0);
+                Vector2 targetPos = new Vector2(x, y);
 
-                //instantiate and reset timer when condition is met
                 if (spawnTimer > spawnInterval)
                 {
-                    Instantiate(collectible1, targetPos, Quaternion.identity);
+                    GameObject newenemy = Instantiate(collectible1, targetPos, Quaternion.identity);
+                    EnemyControl myControl = newenemy.GetComponent<EnemyControl>();
+                    myControl.myPlayer = myPlayer;
                     spawnTimer = 0;
+
+                    
                 }
+
                 break;
 
             case GameState.GAMEOVER:
@@ -78,25 +91,41 @@ public class gameManager : MonoBehaviour
                 {
                     EnterPlaying();
                 }
+
                 break;
+                      
         }
     }
-
-
 
     void EnterPlaying()
     {
         timer = 0;
-        mygameState = GameState.PLAYING;
+        myGameState = GameState.PLAYING;
         myPlayer.SetActive(true);
         TitleText.enabled = false;
+         
+        if (toggleMainCamera == true)
+        {
+            mainCamera.SetActive(false);
+        }
+
+
     }
 
-    void EnterFinal()
+    void EnterFinale()
     {
-        mygameState = GameState.GAMEOVER;
+        myGameState = GameState.GAMEOVER;
         myPlayer.SetActive(false);
         TitleText.enabled = true;
-        TitleText.text = "CONGRATS, You Survived. Press [SPACE] to restart";
+        TitleText.text = "Congrats, You Survived!";
+
+
+        foreach (var gameObj in GameObject.FindGameObjectsWithTag("Collectible"))
+        {
+            Destroy(gameObj);
+        }
+
     }
+
+   
 }

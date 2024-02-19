@@ -2,48 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.SceneManagement;
 
 public class playerController : MonoBehaviour
 {
-    //speed is a multiplier used to control actual speed of player
-    public float speed;
-    private Vector3 myDir;
-    int myScore;
+    private Rigidbody2D rb;
+
+    public float speedX;
+    public float speedY;
+    private float moveX;
+    private float moveY;
+
+    public int myScore;
+
+    public bool playerAlive = true;
+
     // Start is called before the first frame update
     void Start()
     {
+
+        rb = GetComponent<Rigidbody2D>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-
-    }
-
-    void FixedUpdate()
-    {
-        transform.Translate(Dir() * speed);
-    }
-
-    public Vector3 Dir()
-    {
-        //referencing Unity's virtual axis - these pick up KBM OR controller inputs
-        float y = Input.GetAxis("Vertical");
-        float x = Input.GetAxis("Horizontal");
-        myDir = new Vector3(x, y, 0); //combining them into one vector
-        //Debug.Log(myDir);
-        return myDir; //return the value
-    }
-
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log("other: " + collision.gameObject.name);
-        Debug.Log("other tag: " + collision.gameObject.tag);
-
-        if (collision.gameObject.tag == "Collectible")
+        if (playerAlive == false)
         {
-            Destroy(collision.gameObject);
+            SceneManager.LoadScene(1);
+            Debug.Log("Player Died");
         }
     }
+
+    private void FixedUpdate()
+    {
+
+        moveX = Input.GetAxis("Horizontal");
+        moveY = Input.GetAxis("Vertical");
+
+        rb.velocity = new Vector2(moveX * speedX, rb.velocity.y);
+        rb.velocity = new Vector2(rb.velocity.x, moveY * speedY);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Collectible")
+        {
+            
+            playerAlive = false;
+            
+        }
+
+
+    }
+
 }
