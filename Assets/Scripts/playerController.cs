@@ -45,9 +45,9 @@ public class playerController : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, moveY * speedY);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.tag == "Collectible")
+        if (collision.gameObject.tag == "Collectible")
         {
             
             playerAlive = false;

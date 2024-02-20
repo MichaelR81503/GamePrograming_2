@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Collectible
   - CameraFollow
-  - New tag
+  - myPlayer
   layers:
   - Default
   - TransparentFX
