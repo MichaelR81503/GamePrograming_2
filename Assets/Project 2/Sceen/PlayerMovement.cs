@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 10f;
     Rigidbody myRB;
     public Camera myCam;
+    public float lookSpeed = 100f;
 
     Vector3 myLook;
 
@@ -54,12 +55,25 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    Vector3 DeltaLook();
-   {
+    Vector3 DeltaLook()
+    {
         Vector3 dLook = Vector3.zero;
-    float rotY = Input.GetAxisRaw("Mouse Y") * lookSpeed;
-    float rotX = Input.GetAxisRaw("Mouse X") * lookSpeed;
+        float rotY = Input.GetAxisRaw("Mouse Y") * lookSpeed;
+        float rotX = Input.GetAxisRaw("Mouse X") * lookSpeed;
+        dLook = new Vector3(rotY, rotX, 0);
+
+        if(dLook!= Vector3.zero)
+        {
+            Debug.Log("Delta Look:" + dLook);
+        }
+
+        return dLook;
+
+    }
 }
 
-}
+   
+       
+   
+
 
