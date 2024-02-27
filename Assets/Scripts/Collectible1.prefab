@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98d7bc97de8a50d4ead6709a57fca428, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 7
   myPlayer: {fileID: 0}
   enemyDir: {x: 0, y: 0, z: 0}
 --- !u!50 &-169458599888166121
