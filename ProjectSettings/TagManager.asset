@@ -8,6 +8,8 @@ TagManager:
   - CameraFollow
   - myPlayer
   - Terrain
+  - Ball
+  - ball
   layers:
   - Default
   - TransparentFX
