@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Base Vars")]
     public float speed = 10f;
     public float lookSpeed = 100f;
+    public GameObject myBall;
+    Rigidbody ballrb;
 
     [Header("Jump Vars")]
     public float jumpForce = 50f;
@@ -23,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
 
 
     Rigidbody myRB;
-    public Camera myCam;
     public float camLock; //maxlook up/down
 
     Vector3 myLook;
@@ -49,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
         //get the current mouse position
         //zero out our rotations based off that value
 
+        ballrb = myBall.GetComponent<Rigidbody>();
+
     }
     // Update is called once per frame
     void Update()
@@ -56,7 +59,6 @@ public class PlayerMovement : MonoBehaviour
         onStartTimer += Time.fixedDeltaTime;
         //camera forward direction
         myLook += lookDiff;
-        Debug.DrawRay(transform.position, myCam.transform.forward * 3f, Color.green);
 
         //clamp the magnitude to keep the player from looking fully upside down
         myLook.y = Mathf.Clamp(myLook.y, -camLock, camLock);
@@ -64,7 +66,6 @@ public class PlayerMovement : MonoBehaviour
 
         Debug.Log("current myLook: " + myLook);
         transform.rotation = Quaternion.Euler(0f, myLook.x, 0f);
-        myCam.transform.rotation = Quaternion.Euler(-myLook.y, myLook.x, 0f);
 
         //check for key and ability to jump (canJump boolean)
         if (Input.GetKey(KeyCode.Space) && canJump)
@@ -145,17 +146,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Kick()
     {
-        RaycastHit hit;
-        bool rayCast = false; ;
-        //bool rayCast = Physics.Raycast(myFoot.position, myCam.transform.forward, out hit, 5f);
-        if (Physics.SphereCast(myFoot.position, 1f, myCam.transform.position, out hit, legLength)) { rayCast = true; }
-        Debug.DrawRay(myFoot.position, myCam.transform.forward * legLength, Color.blue);
-        Debug.Log("raycast: " + hit);
 
-        if (rayCast)
-        {
-            hit.rigidbody.AddExplosionForce(kickForce, hit.point, legLength, upForce);
-        }
+        //boolean tha turns ball kinematic flag off
+        ballrb.isKinematic = false;
+        ballrb.AddForce(transform.forward * 10f);
+        //turn off the ability to kick additional times after the first
+        //boolean to flag ball as kicked
+        //may want to turn off player move? test for issues
     }
 
     void OnCollisionStay(Collision collision)
