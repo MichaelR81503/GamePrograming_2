@@ -149,7 +149,7 @@ public class PlayerMovement : MonoBehaviour
 
         //boolean tha turns ball kinematic flag off
         ballrb.isKinematic = false;
-        ballrb.AddForce(transform.forward * 10f);
+        ballrb.AddForce(transform.forward * 50f);
         //turn off the ability to kick additional times after the first
         //boolean to flag ball as kicked
         //may want to turn off player move? test for issues

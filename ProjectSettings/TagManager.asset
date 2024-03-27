@@ -10,6 +10,7 @@ TagManager:
   - Terrain
   - Ball
   - ball
+  - Pin
   layers:
   - Default
   - TransparentFX
