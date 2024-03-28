@@ -11,6 +11,9 @@ TagManager:
   - Ball
   - ball
   - Pin
+  - FeedBack
+  - Poing
+  - Arrow
   layers:
   - Default
   - TransparentFX
