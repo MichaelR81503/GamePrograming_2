@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project 2/Sceen/Bowling.unity
     guid: e411697119b9c9048a66e7e61393b1c6
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 183b317b6b3d80e42814cd34357f5798
+  - enabled: 1
+    path: Assets/Scenes/TextRoom1.unity
+    guid: 104fe558a8229374889559504ca7713c
   m_configObjects: {}
